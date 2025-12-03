@@ -40,4 +40,7 @@ public class VehicleHealthDetail {
 
     /** Measured value for the health parameter. */
     private String measuredValue;
+
+    private String svarCd ;
+
 }

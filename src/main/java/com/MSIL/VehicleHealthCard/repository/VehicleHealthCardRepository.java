@@ -101,6 +101,7 @@ public class VehicleHealthCardRepository {
                     detail.setStandValue(String.valueOf(rs.getBigDecimal("STAND_VALUE")));
                     detail.setVariancePer(String.valueOf(rs.getBigDecimal("VARIANCE_PER")));
                     detail.setMeasuredValue(String.valueOf(rs.getBigDecimal("MEASURED_VALUE")));
+                    detail.setSvarCd(rs.getString("SVAR_CD"));
                     return detail;
                 });
 
