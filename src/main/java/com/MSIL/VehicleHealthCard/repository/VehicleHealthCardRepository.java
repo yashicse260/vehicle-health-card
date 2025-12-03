@@ -59,29 +59,32 @@ public class VehicleHealthCardRepository {
         spLoginValidate = new SimpleJdbcCall(jdbcTemplate)
                 .withProcedureName("SP_VHC_LOGIN_VALIDATE");
 
+
         spGetJCList = new SimpleJdbcCall(jdbcTemplate)
                 .withProcedureName("SP_VHC_GET_JC_LIST")
                 .returningResultSet("po_jc_list", (rs, rowNum) -> {
                     JobCardInfo jc = new JobCardInfo();
-                    jc.setRegNum(rs.getString("REG_NUM"));
-                    jc.setVin(rs.getString("VIN"));
-                    jc.setParentGroup(rs.getString("PARENT_GROUP"));
-                    jc.setDealerMapCd(rs.getString("DEALER_MAP_CD"));
-                    jc.setLocCd(rs.getString("LOC_CD"));
-                    jc.setCompFa(rs.getString("COMP_FA"));
-                    jc.setRoNum(rs.getString("RO_NUM"));
+                    jc.setParentGroup(rs.getString("parent_group"));
+                    jc.setDealerMapCd(rs.getString("dealer_map_cd"));
+                    jc.setLocCd(rs.getString("loc_cd"));
+                    jc.setCompFa(rs.getString("comp_fa"));
+                    jc.setRoNum(rs.getString("ro_num"));
+                    jc.setRegNum(rs.getString("reg_num"));                 
+                    jc.setVin(rs.getString("vin"));
+                    jc.setRoDate(rs.getString("ro_date"));
+                    jc.setCloseDate(rs.getString("ACTUAL_DATE"));
                     jc.setSrvCd(rs.getString("SRV_CD"));
-                    jc.setRoDate(rs.getString("RO_DATE"));
-                    jc.setCloseDate(rs.getString("CLOSE_DATE"));
                     jc.setSaAdv(rs.getString("SA_ADV"));
-                    jc.setModel(rs.getString("Model"));
-                    jc.setWorkshopCd(rs.getString("Workshop_Cd"));
-                    jc.setDealerName(rs.getString("Dealer_Name"));
-                    jc.setCustomerName(rs.getString("Customer_Name"));
-                    jc.setOdometer(rs.getString("Odometer"));
+                    jc.setModel(rs.getString("MODEL"));
+                    jc.setWorkshopCd(rs.getString("WORKSHOP_CD"));
+                    jc.setDealerName(rs.getString("DEALER_NAME"));
+                    jc.setCustomerName(rs.getString("CUSTOMER_NAME"));
+                    jc.setOdometer(rs.getString("ODOMETER"));
                     jc.setVhcYn(rs.getString("VHC_YN"));
+                    jc.setSrvSdvName(rs.getString("SRV_SDV_NAME"));
                     return jc;
                 });
+
 
         spGetJCDetails = new SimpleJdbcCall(jdbcTemplate)
                 .withProcedureName("SP_VHC_GET_JC_DTL")

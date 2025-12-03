@@ -58,4 +58,7 @@ public class JobCardInfo {
 
     /** Vehicle Health Card status (Y/N). */
     private String vhcYn;
+
+    /** Vehicle Health Card status (Y/N). */
+    private String srvSdvName;
 }
