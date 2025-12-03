@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 @Component
 public class AESConfig {
+
     @Value("${aes.key}")
     private String key;
 

@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class MasterDataRequest {
+
     /**
      * PMC code for master data request.
      */

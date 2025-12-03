@@ -9,6 +9,7 @@ import java.util.List;
  */
 @Data
 public class UpdateJCRequest {
+
     /**
      * Parent group identifier.
      */
