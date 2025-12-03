@@ -5,11 +5,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ *
+ * Simple mapper utility to map lists of DTOs by creating copies of each item.
+ */
 @Component
 public class VehicleHealthCardMapperUtil {
 
     /**
-     *
+     * 
      * @param sourceList
      * @return
      */
