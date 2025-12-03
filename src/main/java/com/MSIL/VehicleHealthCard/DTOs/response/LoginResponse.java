@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
  * <p>
  * This class extends {@link BaseResponse} to include common response fields
  * such as status and error codes, and adds login-specific details like
- * user identifier and authentication token.
+ * user identifier and authentication tokens.
  * </p>
  */
 @EqualsAndHashCode(callSuper = true)
@@ -17,19 +17,25 @@ import lombok.EqualsAndHashCode;
 public class LoginResponse extends BaseResponse {
 
     /**
-     * The unique identifier of the user who attempted login.
-     * <p>
-     * This is typically echoed back from the request for reference.
-     * </p>
+     * The unique identifier of the user who successfully logged in.
      */
     private String userId;
 
     /**
-     * Authentication token (e.g., JWT or session token).
+     * JWT Access Token for authenticating subsequent API requests.
      * <p>
-     * Currently optional and reserved for future enhancements where
-     * token-based authentication will be implemented.
+     * This token is short-lived (e.g., 15 minutes) and should be sent
+     * in the Authorization header as: {@code Bearer <token>}.
      * </p>
      */
-    private String token;
+    private String jwtToken;
+
+    /**
+     * Refresh Token for obtaining a new JWT Access Token without re-login.
+     * <p>
+     * This token is long-lived (e.g., 7 days) and should be stored securely
+     * by the client. It is used in the refresh API to renew the access token.
+     * </p>
+     */
+    private String refreshToken;
 }
