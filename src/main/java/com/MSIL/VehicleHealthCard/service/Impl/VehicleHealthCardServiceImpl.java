@@ -6,6 +6,7 @@ import com.MSIL.VehicleHealthCard.DTOs.response.items.*;
 import com.MSIL.VehicleHealthCard.repository.VehicleHealthCardRepository;
 import com.MSIL.VehicleHealthCard.service.VehicleHealthCardService;
 import com.MSIL.VehicleHealthCard.utils.AESUtil;
+import com.MSIL.VehicleHealthCard.utils.JwtUtil;
 import com.MSIL.VehicleHealthCard.utils.VehicleHealthCardMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,14 +28,17 @@ public class VehicleHealthCardServiceImpl implements VehicleHealthCardService {
     private final VehicleHealthCardRepository repository;
     private final VehicleHealthCardMapperUtil mapperUtil;
     private final AESUtil aesUtil;
+    private final JwtUtil jwtUtil;
 
     @Autowired
     public VehicleHealthCardServiceImpl(VehicleHealthCardRepository repository,
-                                        VehicleHealthCardMapperUtil mapperUtil, AESUtil aesUtil) {
+                                        VehicleHealthCardMapperUtil mapperUtil, AESUtil aesUtil,
+                                        JwtUtil jwtUtil) {
 
         this.repository = repository;
         this.mapperUtil = mapperUtil;
         this.aesUtil = aesUtil;
+        this.jwtUtil = jwtUtil;
     }
 
     /**
@@ -56,6 +60,7 @@ public class VehicleHealthCardServiceImpl implements VehicleHealthCardService {
      * @param request the {@link LoginRequest} containing user ID and password
      * @return a {@link LoginResponse} object with validation status, error code, and message
      */
+
 
     @Override
     public LoginResponse validateLogin(LoginRequest request) {
@@ -90,6 +95,15 @@ public class VehicleHealthCardServiceImpl implements VehicleHealthCardService {
         response.setErrorMessage((String) result.get("po_err_msg"));
         response.setStatus(response.getErrorCode() == 0 ? STATUS_SUCCESS : STATUS_FAILURE);
         response.setUserId(request.getUserId());
+
+        // Generate JWT and Refresh Token on successful login
+        if (response.getErrorCode() == 0) {
+            String jwtToken = jwtUtil.generateToken(request.getUserId());
+            String refreshToken = jwtUtil.generateRefreshToken(request.getUserId());
+            response.setJwtToken(jwtToken);
+            response.setRefreshToken(refreshToken);
+        }
+
         return response;
     }
 
