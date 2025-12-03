@@ -5,6 +5,7 @@ import com.MSIL.VehicleHealthCard.DTOs.response.*;
 import com.MSIL.VehicleHealthCard.DTOs.response.items.*;
 import com.MSIL.VehicleHealthCard.repository.VehicleHealthCardRepository;
 import com.MSIL.VehicleHealthCard.service.VehicleHealthCardService;
+import com.MSIL.VehicleHealthCard.utils.AESUtil;
 import com.MSIL.VehicleHealthCard.utils.VehicleHealthCardMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,15 @@ public class VehicleHealthCardServiceImpl implements VehicleHealthCardService {
 
     private final VehicleHealthCardRepository repository;
     private final VehicleHealthCardMapperUtil mapperUtil;
+    private final AESUtil aesUtil;
 
     @Autowired
     public VehicleHealthCardServiceImpl(VehicleHealthCardRepository repository,
-                                        VehicleHealthCardMapperUtil mapperUtil) {
+                                        VehicleHealthCardMapperUtil mapperUtil, AESUtil aesUtil) {
+
         this.repository = repository;
         this.mapperUtil = mapperUtil;
+        this.aesUtil = aesUtil;
     }
 
     /**
@@ -52,10 +56,26 @@ public class VehicleHealthCardServiceImpl implements VehicleHealthCardService {
      * @param request the {@link LoginRequest} containing user ID and password
      * @return a {@link LoginResponse} object with validation status, error code, and message
      */
+
     @Override
     public LoginResponse validateLogin(LoginRequest request) {
-        Map<String, Object> result = repository.validateLogin(request.getUserId(), request.getPassword());
         LoginResponse response = new LoginResponse();
+        String decryptedPassword;
+
+        try {
+            // Decrypt the password using AESUtil
+            decryptedPassword = aesUtil.decrypt(request.getPassword());
+        } catch (Exception e) {
+            logger.error("Password decryption failed for userId {}", request.getUserId(), e);
+            response.setErrorCode(-1);
+            response.setErrorMessage("Invalid encrypted password");
+            response.setStatus(STATUS_FAILURE);
+            response.setUserId(request.getUserId());
+            return response;
+        }
+
+        // Call repository with decrypted password
+        Map<String, Object> result = repository.validateLogin(request.getUserId(), decryptedPassword);
 
         if (result == null) {
             logger.error("validateLogin: Repository returned null for userId {}", request.getUserId());

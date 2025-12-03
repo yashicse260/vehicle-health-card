@@ -2,6 +2,7 @@
 package com.MSIL.VehicleHealthCard.utils;
 
 import com.MSIL.VehicleHealthCard.configs.AESConfig;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
@@ -9,6 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+@Component
 public class AESUtil {
 
     private static final String AES_ALGO = "AES/GCM/NoPadding";
