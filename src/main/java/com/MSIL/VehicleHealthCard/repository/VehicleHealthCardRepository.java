@@ -69,7 +69,7 @@ public class VehicleHealthCardRepository {
                     jc.setLocCd(rs.getString("loc_cd"));
                     jc.setCompFa(rs.getString("comp_fa"));
                     jc.setRoNum(rs.getString("ro_num"));
-                    jc.setRegNum(rs.getString("reg_num"));                 
+                    jc.setRegNum(rs.getString("reg_num"));
                     jc.setVin(rs.getString("vin"));
                     jc.setRoDate(rs.getString("ro_date"));
                     jc.setCloseDate(rs.getString("ACTUAL_DATE"));
