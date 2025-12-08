@@ -32,10 +32,11 @@ public class VehicleHealthCardController {
 
     @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
-        logger.debug("login request received: {}", request);
+        logger.info("Login attempt for userId={}", request.getUserId());
         LoginResponse response = service.validateLogin(request);
         return responseUtil.buildResponse(response);
     }
+
 
     @PostMapping(path = "/jc-list", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JCListResponse> getJCList(@Valid @RequestBody JCListRequest request) {

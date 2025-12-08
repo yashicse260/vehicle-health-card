@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
@@ -65,8 +66,9 @@ public class VehicleHealthCardServiceImpl implements VehicleHealthCardService {
     @Override
     public LoginResponse validateLogin(LoginRequest request) {
         LoginResponse response = new LoginResponse();
+        // Enforce UPPERCASE for fields per DB guidance
+        String userIdUpper = request.getUserId() != null ? request.getUserId().toUpperCase(Locale.ROOT) : null;
         String decryptedPassword;
-
         try {
             // Decrypt the password using AESUtil
             decryptedPassword = aesUtil.decrypt(request.getPassword());
@@ -80,7 +82,7 @@ public class VehicleHealthCardServiceImpl implements VehicleHealthCardService {
         }
 
         // Call repository with decrypted password
-        Map<String, Object> result = repository.validateLogin(request.getUserId(), decryptedPassword);
+        Map<String, Object> result = repository.validateLogin(userIdUpper, decryptedPassword);
 
         if (result == null) {
             logger.error("validateLogin: Repository returned null for userId {}", request.getUserId());
@@ -103,7 +105,6 @@ public class VehicleHealthCardServiceImpl implements VehicleHealthCardService {
             response.setJwtToken(jwtToken);
             response.setRefreshToken(refreshToken);
         }
-
         return response;
     }
 
