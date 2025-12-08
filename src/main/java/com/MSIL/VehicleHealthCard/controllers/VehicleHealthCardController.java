@@ -37,6 +37,9 @@ public class VehicleHealthCardController {
         return responseUtil.buildResponse(response);
     }
 
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() { return ResponseEntity.ok("up"); }
+
     @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         logger.info("Login attempt for userId={}", request.getUserId());
