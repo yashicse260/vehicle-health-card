@@ -54,4 +54,6 @@ public interface VehicleHealthCardService {
      * @return UpdateJCResponse DTO
      */
     UpdateJCResponse updateJCDetails(@Valid @NotNull UpdateJCRequest request);
+
+    LoginResponse validateDirectLogin(@Valid LoginRequest request);
 }

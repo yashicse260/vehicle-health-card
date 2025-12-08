@@ -293,4 +293,24 @@ public class VehicleHealthCardServiceImpl implements VehicleHealthCardService {
         return response;
     }
 
+    @Override
+    public LoginResponse validateDirectLogin(LoginRequest request) {
+        LoginResponse response = new LoginResponse();
+        Map<String, Object> result = repository.validateLogin(request.getUserId(), request.getPassword());
+
+        if (result == null) {
+            logger.error("validateDirectLogin: Repository returned null for userId {}", request.getUserId());
+            response.setErrorCode(-1);
+            response.setErrorMessage("Internal error");
+            response.setStatus(STATUS_FAILURE);
+            response.setUserId(request.getUserId());
+            return response;
+        }
+        response.setErrorCode((Integer) result.get("po_err_cd"));
+        response.setErrorMessage((String) result.get("po_err_msg"));
+        response.setStatus(response.getErrorCode() == 0 ? STATUS_SUCCESS : STATUS_FAILURE);
+        response.setUserId(request.getUserId());
+        return response;
+    }
+
 }

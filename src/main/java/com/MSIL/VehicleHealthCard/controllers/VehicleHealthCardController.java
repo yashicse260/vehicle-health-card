@@ -30,6 +30,13 @@ public class VehicleHealthCardController {
         this.responseUtil = responseUtil;
     }
 
+    @PostMapping(path = "/direct-login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<LoginResponse> directLogin(@Valid @RequestBody LoginRequest request) {
+        logger.info("Login attempt for userId={}", request.getUserId());
+        LoginResponse response = service.validateDirectLogin(request);
+        return responseUtil.buildResponse(response);
+    }
+
     @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         logger.info("Login attempt for userId={}", request.getUserId());
